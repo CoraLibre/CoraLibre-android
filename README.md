@@ -28,7 +28,7 @@ Upstream changes are regularly incorporated using git merges. The `master` branc
 tracks the `master` branch of the upstream repository, because that branch contains the most stable
 code and is presumably always be tested for release by SAP.
 
-Upstream merges will be merged by @BjoernPetersen shortly after new non-RC releases are published
+Upstream merges will be merged after new non-RC releases are published
 in the [corona-warn-app/cwa-app-android repo](https://github.com/corona-warn-app/cwa-app-android).
 
 ### Merge checklist
