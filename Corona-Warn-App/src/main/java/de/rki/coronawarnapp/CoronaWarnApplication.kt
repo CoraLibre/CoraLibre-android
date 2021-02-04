@@ -24,6 +24,7 @@ import de.rki.coronawarnapp.util.di.AppInjector
 import de.rki.coronawarnapp.util.di.ApplicationComponent
 import de.rki.coronawarnapp.worker.BackgroundWorkHelper
 import org.conscrypt.Conscrypt
+import org.coralibre.android.sdk.internal.TracingService
 import timber.log.Timber
 import java.security.Security
 import javax.inject.Inject
@@ -63,6 +64,9 @@ class CoronaWarnApplication : Application(), HasAndroidInjector {
             "Application onCreate", "App was woken up"
         )
         watchdogService.launch()
+
+        // Start TracingService
+        TracingService.startService(this)
     }
 
     private val foregroundStateUpdater = object : LifecycleObserver {

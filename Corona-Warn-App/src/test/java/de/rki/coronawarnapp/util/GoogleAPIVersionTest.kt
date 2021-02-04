@@ -9,8 +9,6 @@ import io.mockk.mockkObject
 import io.mockk.unmockkObject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
-import org.coralibre.android.sdk.fakegms.common.api.ApiException
-import org.coralibre.android.sdk.fakegms.common.api.Status
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

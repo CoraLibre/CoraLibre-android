@@ -1,14 +1,18 @@
 package de.rki.coronawarnapp.storage
 
 import de.rki.coronawarnapp.nearby.InternalExposureNotificationClient
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
+import io.mockk.mockkObject
+import io.mockk.unmockkAll
 import kotlinx.coroutines.runBlocking
 import org.coralibre.android.sdk.fakegms.nearby.exposurenotification.ExposureSummary
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import java.util.*
+import java.util.UUID
 
 /**
  * ExposureSummaryRepository test.

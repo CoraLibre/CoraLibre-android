@@ -57,7 +57,20 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url 'https://jitpack.io' }
+        mavenLocal {
+            content {
+                includeGroup "com.github.CoraLibre"
+            }
+            mavenContent {
+                snapshotsOnly()
+            }
+        }
+        maven {
+            url 'https://jitpack.io'
+            content {
+                includeGroup "com.github.CoraLibre"
+            }
+        }
     }
 }
 

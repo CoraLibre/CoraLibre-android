@@ -17,6 +17,7 @@ import de.rki.coronawarnapp.util.ui.observe2
 import de.rki.coronawarnapp.util.ui.viewBindingLazy
 import de.rki.coronawarnapp.util.viewmodel.CWAViewModelFactoryProvider
 import de.rki.coronawarnapp.util.viewmodel.cwaViewModels
+import org.coralibre.android.sdk.internal.ui.CoraPermissions
 import javax.inject.Inject
 
 /**
@@ -33,6 +34,9 @@ class OnboardingTracingFragment : Fragment(R.layout.fragment_onboarding_tracing)
 
     @Inject lateinit var viewModelFactory: CWAViewModelFactoryProvider.Factory
     private val vm: OnboardingTracingFragmentViewModel by cwaViewModels { viewModelFactory }
+
+    // Awful, but okay-ish temporary solution
+    private var isWaitingForPermission: Boolean = false
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         internalExposureNotificationPermissionHelper.onResolutionComplete(
@@ -60,11 +64,26 @@ class OnboardingTracingFragment : Fragment(R.layout.fragment_onboarding_tracing)
         super.onResume()
         binding.onboardingTracingContainer.sendAccessibilityEvent(AccessibilityEvent.TYPE_ANNOUNCEMENT)
         vm.resetTracing()
+        if (isWaitingForPermission) {
+            isWaitingForPermission = false
+            if (CoraPermissions.hasAllPermissions(requireContext())) {
+                internalExposureNotificationPermissionHelper.requestPermissionToStartTracing()
+            } else {
+                // TODO: tell the user we really need those permissions...
+            }
+        }
     }
 
     private fun setButtonOnClickListener() {
         binding.onboardingButtonNext.setOnClickListener {
-            internalExposureNotificationPermissionHelper.requestPermissionToStartTracing()
+            val context = requireContext()
+            if (!CoraPermissions.hasAllPermissions(context)) {
+                CoraPermissions.showPermissionDialog(childFragmentManager)
+                isWaitingForPermission = true
+                // TODO: auto-continue after dialog closes
+            } else {
+                internalExposureNotificationPermissionHelper.requestPermissionToStartTracing()
+            }
         }
         binding.onboardingButtonDisable.setOnClickListener {
             showCancelDialog()
@@ -97,6 +116,7 @@ class OnboardingTracingFragment : Fragment(R.layout.fragment_onboarding_tracing)
     }
 
     private fun navigate() {
+        // TODO: show permission dialog from SDK if any are missing (CoraPermissions object)
         findNavController().doNavigate(
             OnboardingTracingFragmentDirections.actionOnboardingTracingFragmentToOnboardingTestFragment()
         )

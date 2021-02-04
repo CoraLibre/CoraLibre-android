@@ -312,8 +312,13 @@ dependencies {
     debugImplementation 'androidx.fragment:fragment-testing:1.2.4'
 
     // CoraLibre sdk including the FOSS EN service reimplementation
-    implementation('com.github.CoraLibre:CoraLibre-android-sdk:f1d20ea6c0767b39e0670809def39bf062e8d6ed') {
+    def coraLibreVersion = project.hasProperty('version.coralibre')
+        ? project.property('version.coralibre')
+        : 'a52053fb984b33041a3a70b9ce18a40f9ed34f8d'
+
+    implementation("com.github.CoraLibre:CoraLibre-android-sdk:$coraLibreVersion") {
         exclude group: 'com.google.protobuf', module: 'protobuf-java'
+        setChanging(coraLibreVersion.contains('SNAPSHOT'))
     }
 
     // HTTP
